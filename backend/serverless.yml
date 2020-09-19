@@ -12,30 +12,26 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
-tracing:
-  lambda: true
-  apiGateway: true
+  tracing:
+    lambda: true
+    apiGateway: true
 
-environment:
-  TODOS_TABLE: todos-serverless-${self:provider.stage}
-  TODOS_CREATED_AT_INDEX: CreatedAtIndex 
-  TODOS_ATTACHMENT_S3_BUCKET: serverless-todo-images-${self:provider.stage} 
-  SIGNED_URL_EXPIRATION: 300
+  environment:
+    TODOS_TABLE: todos-serverless-${self:provider.stage}
+    TODOS_CREATED_AT_INDEX: CreatedAtIndex 
+    TODOS_ATTACHMENT_S3_BUCKET: serverless-todo-images-${self:provider.stage} 
+    SIGNED_URL_EXPIRATION: 300
+  
+  logs:
+      restApi: true
+    
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - xray:PutTelemetryRecords
+        - xray:PutTraceSegments
+      Resource: "*"
 
-custom:
-  dynamodb:
-    stages:
-      - dev
-
-logs:
-  restApi: true
-
-iamRoleStatements:
-  - Effect: Allow
-    Action:
-      - xray:PutTelemetryRecords
-      - xray:PutTraceSegments
-    Resource: "*"
 
 functions:
 
