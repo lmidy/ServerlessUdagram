@@ -1,25 +1,17 @@
 import * as AWS from 'aws-sdk'
+import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate'
 import { createLogger } from '../utils/logger'
 
+const XAWS = AWSXRay.captureAWS(AWS)
 const logger = createLogger('TodosAccessDataLayer')
 
-function createDynamoDBClient(): DocumentClient {
-  if (process.env.IS_OFFLINE) {
-      return new AWS.DynamoDB.DocumentClient({
-          region: 'localhost',
-          endpoint: 'localstack:4569',
-          sslEnabled: false,
-      });
-  }
-  return new AWS.DynamoDB.DocumentClient();
-}
 
 export class TodosDataLayer {
   public constructor(
-    private readonly documentClient: DocumentClient = createDynamoDBClient(),
+    private readonly documentClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
     private readonly todosTable = process.env.TODOS_TABLE,
     private readonly createdAtIndex = process.env.TODOS_CREATED_AT_INDEX
   ) { }

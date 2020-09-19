@@ -7,7 +7,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
@@ -19,19 +19,20 @@ provider:
   environment:
     TODOS_TABLE: todos-serverless-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex 
-    TODOS_ATTACHMENT_S3_BUCKET: serverless-todo-images-${self:provider.stage} 
+    TODOS_ATTACHMENT_S3_BUCKET: serverless-todo-images-lmid-${self:provider.stage} 
     SIGNED_URL_EXPIRATION: 300
   
   logs:
-      restApi: true
-    
+    # Enable API Gateway logs
+    restApi: true
+
   iamRoleStatements:
     - Effect: Allow
       Action:
         - xray:PutTelemetryRecords
         - xray:PutTraceSegments
       Resource: "*"
-
+  
 
 functions:
 
@@ -46,12 +47,12 @@ functions:
           method: get
           path: todos
           cors: true
-        authorizer: Auth
+          authorizer: Auth
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
-        Actions:
-          -dynamodb:Query
+        Action:
+          - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 
