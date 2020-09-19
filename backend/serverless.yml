@@ -22,6 +22,11 @@ environment:
   TODOS_ATTACHMENT_S3_BUCKET: serverless-todo-images-${self:provider.stage} 
   SIGNED_URL_EXPIRATION: 300
 
+custom:
+  dynamodb:
+    stages:
+      - dev
+
 logs:
   restApi: true
 
@@ -51,12 +56,7 @@ functions:
       - Effect: Allow
         Actions:
           -dynamodb:Query
-        Resource:
-          - !Join
-            -'/'
-            - - !GetAtt TodosTable.Arn
-              - 'index'
-              - ${self:provider.environment.TODOS_CREATED_AT_INDEX}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 
   # TODO: Configure this function
@@ -70,13 +70,13 @@ functions:
           authorizer: Auth
           request:
             schema:
-              application/json: ${file(models/create-todo-request.json)}
+              application/json: ${file(src/models/create-todo-request.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
-        Resource: !GetAtt TodosTable.Arn
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 
   # TODO: Configure this function
@@ -90,14 +90,14 @@ functions:
           authorizer: Auth
           request:
             schema:
-              application/json: ${file(models/update-todo-request.json)}
+              application/json: ${file(src/models/update-todo-request.json)}
     iamRoleStatementsInherit: true
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:GetItem
           - dynamodb:UpdateItem
-        Resource: !GetAtt TodosTable.Arn
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
   DeleteTodo:
@@ -114,7 +114,7 @@ functions:
         Action:
           - dynamodb:GetItem
           - dynamodb:DeleteItem
-        Resource: !GetAtt TodosTable.Arn
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
   GenerateUploadUrl:
@@ -131,7 +131,7 @@ functions:
         Action:
           - dynamodb:GetItem
           - dynamodb:UpdateItem
-        Resource: !GetAtt TodosTable.Arn
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
       - Effect: Allow
         Action:
           - s3:PutObject

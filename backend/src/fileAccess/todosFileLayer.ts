@@ -6,7 +6,7 @@ const XAWS = AWSXRay.captureAWS(AWS)
 export class TodosFileLayer {
   constructor(
     private readonly s3: AWS.S3 = createS3Client(),
-    private readonly bucketName: string = process.env.ATTACHMENT_S3_BUCKET,
+    private readonly bucketName: string = process.env.TODOS_ATTACHMENT_S3_BUCKET,
     private readonly urlExpiration: string = process.env.SIGNED_URL_EXPIRATION
   ) {}
 
