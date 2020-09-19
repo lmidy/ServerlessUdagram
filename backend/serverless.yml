@@ -17,7 +17,7 @@ tracing:
   apiGateway: true
 
 environment:
-  TODOS_TABLE: Todos-${self:provider.stage}
+  TODOS_TABLE: todos-serverless-${self:provider.stage}
   TODOS_CREATED_AT_INDEX: CreatedAtIndex 
   TODOS_ATTACHMENT_S3_BUCKET: serverless-todo-images-${self:provider.stage} 
   SIGNED_URL_EXPIRATION: 300
