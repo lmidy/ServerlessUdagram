@@ -34,7 +34,7 @@ export class TodosDataLayer {
     return items as TodoItem[];
   }
 
-async get(todoId: string, userId: string) {
+async get(userId: string, todoId: string) {
     logger.info('Getting a todo by Id', {userId, todoId})
     
     const result = await this.documentClient.get({
@@ -79,8 +79,7 @@ async get(todoId: string, userId: string) {
         },
         ExpressionAttributeNames: {
           '#n': 'name', 
-        },
-        ReturnValues: 'UPDATED_NEW',
+        }
       })
       .promise();
   }
