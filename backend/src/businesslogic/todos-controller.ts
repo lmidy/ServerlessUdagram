@@ -72,11 +72,16 @@ async function checkIfExists(userId: string, todoId: string) {
 
 export async function createAttachmentUrl(userId: string, todoId: string): Promise<string> {
   const todo = await getById(userId, todoId)
-
+  console.log('todo', todo)
   const presignedUrl = todoAttachment.getUploadUrl(todoId)
+  console.log('presigned url', presignedUrl)
+  
 
   if (!todo.attachmentUrl) {
-    await listsAccess.setAttachmentUrl(userId, todoId, todoAttachment.getDownloadUrl(todoId))
+    const downloadUrl = todoAttachment.getUploadUrl(todoId)
+    console.log('download url', downloadUrl)
+    await listsAccess.setAttachmentUrl(userId, todoId, downloadUrl)
+    console.log('download url after await', downloadUrl)
   }
 
   return presignedUrl
