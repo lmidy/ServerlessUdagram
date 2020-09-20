@@ -71,11 +71,11 @@ async get(todoId: string, userId: string) {
           todoId
         },
         UpdateExpression:
-          'set #n = :name, done = :done, dueDate = :dueDate',
+          'set #n = :name, dueDate = :dueDate, done = :done',
         ExpressionAttributeValues: {
           ':name': todoUpdate.name,
-          ':done': todoUpdate.done,
           ':dueDate': todoUpdate.dueDate,
+          ':done': todoUpdate.done,
         },
         ExpressionAttributeNames: {
           '#n': 'name', 
