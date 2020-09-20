@@ -53,7 +53,12 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: 
+          - !Join
+            - '/'
+            - - !GetAtt TodosTable.Arn
+              - 'index'
+              - ${self:provider.environment.TODOS_CREATED_AT_INDEX}
 
 
   # TODO: Configure this function

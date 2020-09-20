@@ -5,11 +5,14 @@ import * as middy from 'middy'
 import { getUserId } from '../utils'
 import { cors } from 'middy/middlewares'
 import { getTodosForUser } from '../../businesslogic/todos-controller'
+import { createLogger } from '../../utils/logger'
+
+const logger = createLogger('get all todos for this userid')
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todos = await getTodosForUser(getUserId(event))
-
+    logger.info('get todos', event)
     return {
       statusCode: 200,
       body: JSON.stringify({
