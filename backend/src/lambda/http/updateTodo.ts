@@ -29,6 +29,7 @@ handler
   .use(httpErrorHandler())
   .use(
     cors({
-      credentials: true
+      credentials: true,
+      origin: '*'
     })
   )
