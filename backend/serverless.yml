@@ -137,6 +137,7 @@ functions:
       - Effect: Allow
         Action:
           - s3:PutObject
+          - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.TODOS_ATTACHMENT_S3_BUCKET}/*
 
 resources:
