@@ -16,7 +16,7 @@ export const handler = middy(
     const uploadUrl = await createAttachmentUrl(getUserId(event), todoId)
 
     return {
-      statusCode: 200,
+      statusCode: 201,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true

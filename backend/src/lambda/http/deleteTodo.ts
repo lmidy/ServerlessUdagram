@@ -16,12 +16,12 @@ export const handler = middy(
     await deleteTodo(getUserId(event), todoId)
 
     return {
-      statusCode: 200,
+      statusCode: 204,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true
       },
-      body: ''
+      body: 'Item deleted'
     }
   }
 )
@@ -30,6 +30,7 @@ handler
 .use(httpErrorHandler())
 .use(
   cors({
-    credentials: true
+    credentials: true,
+    origin: '*'
   })
 )

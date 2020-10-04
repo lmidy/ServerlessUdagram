@@ -15,12 +15,12 @@ export const handler = middy(
     await updateTodo(getUserId(event), todoId, updatedTodo)
 
     return {
-      statusCode: 200,
+      statusCode: 204,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true
       },
-      body: 'updated'
+      body: 'todo updated'
     }
   }
 )

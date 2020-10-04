@@ -18,7 +18,7 @@ export const handler = middy(
     const list = await createTodo(getUserId(event), newTodo)
 
     return {
-      statusCode: 200,
+      statusCode: 201,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true
@@ -32,6 +32,7 @@ export const handler = middy(
 
 handler.use(
   cors({
-    credentials: true
+    credentials: true,
+    origin: '*'
   })
 )
