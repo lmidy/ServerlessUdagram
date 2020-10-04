@@ -78,7 +78,7 @@ export async function createAttachmentUrl(userId: string, todoId: string): Promi
   
 
   if (!todo.attachmentUrl) {
-    const downloadUrl = todoAttachment.getUploadUrl(todoId)
+    const downloadUrl = todoAttachment.getDownloadUrl(todoId)
     console.log('download url', downloadUrl)
     await listsAccess.setAttachmentUrl(userId, todoId, downloadUrl)
     console.log('download url after await', downloadUrl)
